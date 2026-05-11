@@ -92,7 +92,14 @@ public class WebSecurityConfiguration {
                         "http://127.0.0.1:*",
                         "https://localhost:*",
                         "https://127.0.0.1:*",
-                        "https://*.vercel.app"));
+                        "https://*.vercel.app",
+                        "https://*.web.app",
+                        "https://*.firebaseapp.com",
+                        "https://front-funda.web.app",
+                        "https://front-funda.firebaseapp.com"
+                )
+        );
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(
                 List.of(
@@ -100,7 +107,9 @@ public class WebSecurityConfiguration {
                         HttpHeaders.CONTENT_TYPE,
                         HttpHeaders.ACCEPT,
                         HttpHeaders.ORIGIN,
-                        "X-Requested-With"));
+                        "X-Requested-With"
+                )
+        );
         configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
