@@ -51,16 +51,15 @@ public class GrindCalibration extends AuditableAbstractAggregateRoot<GrindCalibr
     private LocalDate calibrationDate;
 
     @Getter
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String comments;
 
     @Getter
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
     @Getter
-    @Lob
-    @Column(name = "sample_image", columnDefinition = "LONGTEXT")
+    @Column(name = "sample_image", columnDefinition = "NVARCHAR(MAX)")
     private String sampleImage;
 
     public GrindCalibration() {}

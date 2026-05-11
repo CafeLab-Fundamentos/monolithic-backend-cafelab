@@ -40,12 +40,11 @@ public class CuppingSession extends AuditableAbstractAggregateRoot<CuppingSessio
     private boolean favorite;
 
     @Getter
-    @Lob
-    @Column(name = "results_json", columnDefinition = "LONGTEXT")
+    @Column(name = "results_json", columnDefinition = "NVARCHAR(MAX)")
     private String resultsJson;
 
     @Getter
-    @Column(name = "roast_style_notes", columnDefinition = "TEXT")
+    @Column(name = "roast_style_notes", columnDefinition = "NVARCHAR(MAX)")
     private String roastStyleNotes;
 
     public CuppingSession() {}

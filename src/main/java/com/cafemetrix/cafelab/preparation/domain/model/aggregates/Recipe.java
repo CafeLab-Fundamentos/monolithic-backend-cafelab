@@ -44,10 +44,10 @@ public class Recipe extends AuditableAbstractAggregateRoot<Recipe> {
     @Column(name = "preparation_time", nullable = false)
     private Integer preparationTime;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "NVARCHAR(MAX)", nullable = false)
     private String steps;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String tips;
 
     @Column(length = 20, nullable = false)

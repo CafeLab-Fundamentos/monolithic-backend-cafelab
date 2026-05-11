@@ -41,31 +41,32 @@ public class DefectsLegacyCoffeeIdRepair implements ApplicationRunner {
     }
 
     private void repairIfNeeded() {
-        String db = jdbc.queryForObject("SELECT DATABASE()", String.class);
+        String db = jdbc.queryForObject("SELECT DB_NAME()", String.class);
         if (db == null || db.isBlank()) {
             return;
         }
 
         List<String> fkNames = jdbc.query(
                 """
-                SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
-                WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'defects' AND COLUMN_NAME = 'coffee_id'
-                  AND REFERENCED_TABLE_NAME IS NOT NULL
-                LIMIT 1
+                SELECT TOP 1 fk.name
+                FROM sys.foreign_key_columns fkc
+                JOIN sys.foreign_keys fk ON fkc.constraint_object_id = fk.object_id
+                JOIN sys.columns c ON fkc.parent_object_id = c.object_id AND fkc.parent_column_id = c.column_id
+                JOIN sys.tables t ON fkc.parent_object_id = t.object_id
+                WHERE t.name = 'defects' AND c.name = 'coffee_id'
                 """,
-                (rs, rowNum) -> rs.getString(1),
-                db);
+                (rs, rowNum) -> rs.getString(1));
         if (!fkNames.isEmpty()) {
             String fk = fkNames.get(0);
             if (fk != null && SAFE_IDENT.matcher(fk).matches()) {
-                jdbc.execute("ALTER TABLE defects DROP FOREIGN KEY `" + fk + "`");
+                jdbc.execute("ALTER TABLE defects DROP CONSTRAINT [" + fk + "]");
             }
         }
 
         Integer colCount = jdbc.queryForObject(
                 """
                 SELECT COUNT(*) FROM information_schema.COLUMNS
-                WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'defects' AND COLUMN_NAME = 'coffee_id'
+                WHERE TABLE_CATALOG = ? AND TABLE_NAME = 'defects' AND COLUMN_NAME = 'coffee_id'
                 """,
                 Integer.class,
                 db);
