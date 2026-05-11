@@ -20,6 +20,8 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
     private String profilePicture;
     private String paymentMethod;
     private boolean isFirstLogin;
+
+    @Column(name = "suscription_plan")
     private String plan;
     private boolean hasPlan;
 
